@@ -83,6 +83,6 @@ tests/      testes Playwright e backend falso
 docs/       regras de privacidade e imagens
 ```
 
-## Aviso
+## Licença
 
-Os dados mostrados nas imagens são inventados. O código é compartilhado para fins de portfólio; pelo `schema.sql` e pelas regras em `docs/PRIVACIDADE.md` fica claro como tratar dados de terceiros, mas se você montar uma base parecida, a responsabilidade pela conformidade com a LGPD é sua.
+Código sob a [licença MIT](LICENSE). Os dados mostrados nas imagens são inventados. Se você montar uma base parecida com dados de pessoas reais, a conformidade com a LGPD é responsabilidade sua; as regras em [docs/PRIVACIDADE.md](docs/PRIVACIDADE.md) mostram como este projeto trata o assunto.
