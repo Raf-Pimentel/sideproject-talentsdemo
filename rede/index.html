@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Diretório</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<section id="login" class="hidden">
+  <h1>Diretório</h1>
+  <p class="muted">Acesso por convite.</p>
+  <label>E-mail<input id="email" type="email" autocomplete="username"></label>
+  <label>Senha<input id="password" type="password" autocomplete="current-password"></label>
+  <button class="primary" id="btnLogin">Entrar</button>
+  <p id="loginMsg" class="muted" role="status"></p>
+</section>
+
+<div id="app" class="hidden">
+  <header>
+    <h1>Diretório</h1>
+    <span class="spacer"></span>
+    <button id="btnConn" class="hidden">Sugerir conexões</button>
+    <div class="popwrap">
+      <button class="acct" id="btnAccount" aria-haspopup="menu" aria-expanded="false" aria-controls="accountMenu" aria-label="Conta">
+        <span class="avatar" id="userAvatar" aria-hidden="true"></span><span aria-hidden="true">▾</span>
+      </button>
+      <div class="pop hidden" id="accountMenu" role="menu">
+        <div class="who" id="userBox" title="">
+          <span id="userEmail"></span><small id="userRole"></small>
+        </div>
+        <hr>
+        <button role="menuitem" id="btnPw">Alterar senha</button>
+        <hr>
+        <button role="menuitem" id="btnLogout">Sair</button>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="pagehead"><h2>Pessoas</h2><p class="muted" id="pageSub">As pessoas que aceitaram aparecer neste diretório</p></div>
+    <section id="pw" class="hidden">
+      <label>Nova senha (mínimo 12 caracteres)<input id="newPw" type="password" autocomplete="new-password"></label>
+      <div class="row">
+        <button class="primary" id="pwSave">Salvar senha</button>
+        <button id="pwCancel">Cancelar</button>
+        <span id="pwMsg" class="muted" role="status"></span>
+      </div>
+    </section>
+    <div class="filters">
+      <input id="fq" type="search" aria-label="Buscar" placeholder="Buscar por nome, curso, empresa…">
+      <select id="funi" aria-label="Universidade"></select>
+      <select id="fnivel" aria-label="Nível"></select>
+      <input id="fnmin" type="number" min="0" max="10" step="0.1" aria-label="Nota mínima" placeholder="Nota mín.">
+      <input id="fnmax" type="number" min="0" max="10" step="0.1" aria-label="Nota máxima" placeholder="Nota máx.">
+    </div>
+    <p class="count" id="count" role="status"></p>
+    <div id="list"></div>
+  </main>
+</div>
+
+<div id="conn" class="hidden">
+  <div id="connBox" role="dialog" aria-modal="true" aria-labelledby="connTitle">
+    <div class="connHead"><h2 id="connTitle">Sugerir conexões</h2><button id="connClose">Fechar</button></div>
+    <div class="muted">A IA lê os perfis do diretório que você já pode ver (nunca nomes) e indica quem conectar com a pessoa. Nada é salvo.</div>
+    <label>Pessoa do diretório (opcional)<input id="connPessoa" list="dl-conn" autocomplete="off" placeholder="Nome"></label>
+    <datalist id="dl-conn"></datalist>
+    <label>Ou descreva a pessoa (ignorado se escolher uma acima)<textarea id="connDesc" maxlength="1500" placeholder="Ex.: Estudante de engenharia, já criou duas startups, quer montar um time técnico para uma healthtech."></textarea></label>
+    <label>O que ela busca<input id="connObj" maxlength="300" placeholder="co-founder, vaga em um time, investidor, mentoria…"></label>
+    <div class="row"><button class="primary" id="connGo">Sugerir</button><span id="connStatus" class="muted" role="status"></span></div>
+    <div id="connOut"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js" integrity="sha384-GFr3yTh5lJznCbZfpTtXnwboFsxqtTQoeTZCRHhE0579KrRmlCzen5AA8ohaB5ug" crossorigin="anonymous"></script>
+<script src="app.js"></script>
+</body>
+</html>

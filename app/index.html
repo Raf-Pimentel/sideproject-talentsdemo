@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Talents</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<section id="login" class="hidden">
+  <h1>Talents</h1>
+  <div class="muted">Acesso restrito.</div>
+  <label>E-mail<input id="email" type="email" autocomplete="username"></label>
+  <label>Senha<input id="password" type="password" autocomplete="current-password"></label>
+  <button class="primary" id="btnLogin">Entrar</button>
+  <div id="loginMsg" class="muted" role="status"></div>
+</section>
+
+<div id="app" class="hidden">
+  <header>
+    <h1>Talents</h1>
+    <nav aria-label="Seções">
+      <button data-view="people" class="active">Pessoas</button>
+      <button data-view="birthdays">Aniversários</button>
+      <button data-view="missing">Dados faltando</button>
+      <button data-view="stats">Números</button>
+      <button data-view="graph">Rede</button>
+      <button data-view="groups">Grupos</button>
+      <button data-view="enrich">Enriquecer</button>
+      <button data-view="history">Histórico</button>
+    </nav>
+    <span class="spacer"></span>
+    <div class="split popwrap">
+      <button class="primary" id="btnNew">+ Nova pessoa</button>
+      <button class="primary caret" id="btnAiMenu" data-menu="aiMenu" aria-haspopup="menu" aria-expanded="false" aria-label="Mais formas de adicionar e conectar">▾</button>
+      <div class="pop hidden" id="aiMenu" role="menu">
+        <button role="menuitem" id="btnAI">Adicionar com IA</button>
+        <button role="menuitem" id="btnConn" title="A IA sugere quem da base conectar com uma pessoa">Sugerir conexões</button>
+      </div>
+    </div>
+    <div class="popwrap">
+      <button class="acct" id="btnAccount" data-menu="accountMenu" aria-haspopup="menu" aria-expanded="false" aria-label="Conta e ferramentas">
+        <span class="avatar" id="userAvatar" aria-hidden="true"></span><span aria-hidden="true">▾</span>
+      </button>
+      <div class="pop hidden" id="accountMenu" role="menu">
+        <div class="who" id="userBox" title="">
+          <span id="userEmail"></span><small id="userRole"></small>
+        </div>
+        <hr>
+        <button role="menuitem" id="btnAlias" title="Regras que unificam grafias diferentes (USP / Universidade de São Paulo)">Padronizar nomes</button>
+        <button role="menuitem" id="btnBackup" title="Baixar uma cópia de todos os dados (JSON)">Baixar backup</button>
+        <hr>
+        <button role="menuitem" id="btnLogout">Sair</button>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div id="notAdmin" class="banner hidden">Este usuário não está autorizado a ver os dados. Peça para registrá-lo como administrador.</div>
+    <div id="backupWarn" class="banner hidden"></div>
+    <div class="pagehead"><h2 id="pageTitle">Pessoas</h2><p id="pageSub" class="muted"></p></div>
+    <div id="view"></div>
+  </main>
+  <div id="scrim" class="scrim hidden"></div>
+  <aside id="drawer" class="hidden" role="dialog" aria-modal="true" aria-label="Perfil da pessoa" tabindex="-1"></aside>
+</div>
+<div id="ai" class="overlay hidden">
+  <div id="aiBox" role="dialog" aria-modal="true" aria-labelledby="aiTitle">
+    <div class="boxhead"><h2 id="aiTitle">Adicionar com IA</h2><button id="aiClose">Fechar</button></div>
+    <div class="muted">Descreva a pessoa em linguagem natural (pode colar um texto). A IA só propõe: nada é salvo até você confirmar. Só os nomes das pessoas já cadastradas são enviados junto, para evitar duplicatas.</div>
+    <textarea id="aiText" aria-label="Descrição da pessoa" placeholder="Ex.: Maria Silva, estuda economia no Insper, forma em 2027, nasceu em Campinas, aniversário 12/03/2002, gosta de xadrez, indicada pelo João."></textarea>
+    <div class="row-actions flush"><button class="primary" id="aiGo">Analisar</button><span id="aiStatus" class="muted" role="status"></span></div>
+    <div id="aiPreview"></div>
+  </div>
+</div>
+<div id="conn" class="overlay hidden">
+  <div id="connBox" role="dialog" aria-modal="true" aria-labelledby="connTitle">
+    <div class="connHead"><h2 id="connTitle">Sugerir conexões</h2><button id="connClose">Fechar</button></div>
+    <div class="muted">A IA lê os perfis da base (formação, experiência, iniciativas, destaques, nota, ambição, hobbies e resumo; nunca nomes, datas de nascimento, cidades ou suas notas) e indica quem conectar com a pessoa. Nada é salvo.</div>
+    <label>Pessoa que já está na base (opcional)<input id="connPessoa" list="dl-pessoa" autocomplete="off" placeholder="Nome ou id (T012)"></label>
+    <label>Ou descreva a pessoa (ignorado se escolher uma acima)<textarea id="connDesc" maxlength="1500" placeholder="Ex.: Estudante de engenharia na Poli, já criou duas startups, quer montar um time técnico para uma healthtech."></textarea></label>
+    <label>O que ela busca<input id="connObj" maxlength="300" placeholder="co-founder, vaga em um time, investidor, mentoria…"></label>
+    <div class="row-actions"><button class="primary" id="connGo">Sugerir</button><span id="connStatus" class="muted" role="status"></span></div>
+    <div id="connOut"></div>
+  </div>
+</div>
+<div id="alias" class="overlay hidden">
+  <div id="aliasBox" role="dialog" aria-modal="true" aria-label="Padronizar nomes"></div>
+</div>
+<div id="dlg" class="overlay hidden">
+  <div id="dlgBox" role="alertdialog" aria-modal="true" aria-labelledby="dlgTitle" aria-describedby="dlgBody">
+    <h2 id="dlgTitle"></h2>
+    <div id="dlgBody" class="muted"></div>
+    <input id="dlgInput" class="hidden" autocomplete="off">
+    <div class="dlg-actions"><button id="dlgCancel">Cancelar</button><button id="dlgOk" class="primary">Confirmar</button></div>
+  </div>
+</div>
+<div id="dls" class="hidden"></div>
+<div id="toast" class="hidden" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js" integrity="sha384-GFr3yTh5lJznCbZfpTtXnwboFsxqtTQoeTZCRHhE0579KrRmlCzen5AA8ohaB5ug" crossorigin="anonymous"></script>
+<script src="viz.js"></script>
+<script src="cluster.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

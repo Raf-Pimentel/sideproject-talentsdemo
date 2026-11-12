@@ -1,0 +1,20 @@
+# Secrets and local state: never commit
+.env
+.env.*
+.vercel
+node_modules/
+*.bak
+*.log
+# Data exports and backups (personal data of third parties)
+backup*.json
+*.csv
+*.ics
+
+# Testes de interface
+tests/.cache/
+tests/test-results/
+tests/playwright-report/
+
+docs/img/_quadros/
+tests/demo/saida/
+.claude/settings.local.json
